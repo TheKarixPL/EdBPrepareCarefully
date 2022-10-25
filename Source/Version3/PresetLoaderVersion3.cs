@@ -439,8 +439,8 @@ namespace EdB.PrepareCarefully {
                 Failed = true;
             }
             
-            pawn.HeadGraphicPath = record.headGraphicPath;
-            pawn.Pawn.story.hairColor = record.hairColor;
+            // pawn.HeadGraphicPath = record.headGraphicPath;
+            pawn.Pawn.story.HairColor = record.hairColor;
             
             if (record.melanin >= 0.0f) {
                 pawn.MelaninLevel = record.melanin;

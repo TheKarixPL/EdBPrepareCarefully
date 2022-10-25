@@ -845,7 +845,7 @@ namespace EdB.PrepareCarefully {
             }
         }
 
-        protected void SelectNextHead(CustomPawn customPawn, int direction) {
+        /* protected void SelectNextHead(CustomPawn customPawn, int direction) {
             List<CustomHeadType> heads = PrepareCarefully.Instance.Providers.HeadTypes.GetHeadTypes(customPawn.Pawn.def, customPawn.Gender).ToList();
             int index = heads.IndexOf(customPawn.HeadType);
             if (index == -1) {
@@ -860,7 +860,7 @@ namespace EdB.PrepareCarefully {
             }
             customPawn.HeadType = heads[index];
             this.pawnLayerLabel = GetHeadLabel(customPawn);
-        }
+        } */
 
         protected void SelectNextBodyType(CustomPawn customPawn, int direction) {
             ProviderBodyTypes provider = PrepareCarefully.Instance.Providers.BodyTypes;

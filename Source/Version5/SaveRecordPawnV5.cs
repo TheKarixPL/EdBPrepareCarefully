@@ -73,9 +73,9 @@ namespace EdB.PrepareCarefully {
             this.adulthood = pawn.Adulthood?.identifier ?? pawn.LastSelectedAdulthoodBackstory?.identifier;
             this.childhood = pawn.Childhood?.identifier;
             this.skinColor = pawn.Pawn.story.SkinColor;
-            this.melanin = pawn.Pawn.story.melanin;
+            this.melanin = pawn.Pawn.genes.GetMelaninGene().minMelanin;
             this.hairDef = pawn.HairDef.defName;
-            this.hairColor = pawn.Pawn.story.hairColor;
+            this.hairColor = pawn.Pawn.story.HairColor;
             this.headGraphicPath = pawn.HeadGraphicPath;
             this.bodyType = pawn.BodyType.defName;
             this.beard = pawn.Beard?.defName;

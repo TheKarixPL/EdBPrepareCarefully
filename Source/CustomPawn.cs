@@ -162,10 +162,10 @@ namespace EdB.PrepareCarefully {
 
         public Color HairColor {
             get {
-                return pawn.story.hairColor;
+                return pawn.story.HairColor;
             }
             set {
-                pawn.story.hairColor = value;
+                pawn.story.HairColor = value;
                 MarkPortraitAsDirty();
             }
         }
@@ -449,15 +449,15 @@ namespace EdB.PrepareCarefully {
 
         public void CopyAppearance(Pawn pawn) {
             this.HairDef = pawn.story.hairDef;
-            this.pawn.story.hairColor = pawn.story.hairColor;
+            this.pawn.story.HairColor = pawn.story.HairColor;
             this.pawn.story.bodyType = pawn.story.bodyType;
             if (pawn.style != null && this.Pawn.style != null) {
                 this.Beard = pawn.style.beardDef;
                 this.FaceTattoo = pawn.style.FaceTattoo;
                 this.BodyTattoo = pawn.style.BodyTattoo;
             }
-            this.HeadGraphicPath = pawn.story.HeadGraphicPath;
-            this.MelaninLevel = pawn.story.melanin;
+            // this.HeadGraphicPath = pawn.story.headType.graphicPath;
+            this.MelaninLevel = pawn.genes.GetMelaninGene().minMelanin;
             this.Pawn.apparel.DestroyAll();
             foreach (var layer in PrepareCarefully.Instance.Providers.PawnLayers.GetLayersForPawn(this)) {
                 if (layer.Apparel) {
@@ -1154,7 +1154,7 @@ namespace EdB.PrepareCarefully {
             set {
                 this.headType = value;
                 //Logger.Debug("Setting pawn headType to " + value);
-                this.pawn.story.crownType = value.CrownType != CrownType.Undefined ? value.CrownType : CrownType.Average;
+                this.pawn.story.headType = value.HeadType;
                 ThingComp alienComp = ProviderAlienRaces.FindAlienCompForPawn(pawn);
                 if (alienComp != null) {
                     ReflectionUtil.GetPublicField(alienComp, "crownType").SetValue(alienComp, headType.AlienCrownType);
@@ -1166,9 +1166,9 @@ namespace EdB.PrepareCarefully {
 
         public string HeadGraphicPath {
             get {
-                return pawn.story.HeadGraphicPath;
+                return pawn.story.headType.graphicPath;
             }
-            set {
+            /* set {
                 CustomHeadType headType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadType(pawn.def, value);
                 if (headType != null) {
                     HeadType = headType;
@@ -1178,13 +1178,11 @@ namespace EdB.PrepareCarefully {
                 }
                 ResetCachedHead();
                 MarkPortraitAsDirty();
-            }
+            } */
         }
 
         protected void SetHeadGraphicPathOnPawn(Pawn pawn, string value) {
-            // Need to use reflection to set the private field.
-            typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic)
-                .SetValue(pawn.story, value);
+            pawn.story.headType.graphicPath = value;
         }
 
         protected string FilterHeadPathForGender(string path) {
@@ -1328,13 +1326,10 @@ namespace EdB.PrepareCarefully {
 
         public float MelaninLevel {
             get {
-                return pawn.story.melanin;
+                return pawn.genes.GetMelaninGene().minMelanin;
             }
             set {
-                pawn.story.melanin = value;
-                if (alienRace != null) {
-                    SkinColor = PawnSkinColors.GetSkinColor(value);
-                }
+                pawn.genes.GetMelaninGene().minMelanin = value;
                 MarkPortraitAsDirty();
             }
         }
