@@ -930,15 +930,6 @@ namespace EdB.PrepareCarefully {
             this.pawnLayerLabel = option.Label;
         }
 
-        protected string GetHeadLabel(CustomPawn pawn) {
-            if (pawn.HeadType != null) {
-                return pawn.HeadType.Label;
-            }
-            else {
-                return "EdB.PC.Common.Default".Translate();
-            }
-        }
-
         protected float CalculateDialogPositionX() {
             return Find.WindowStack.currentlyDrawnWindow.windowRect.x + PanelRect.xMax + 24f;
         }

@@ -9,13 +9,13 @@ namespace EdB.PrepareCarefully {
     public class PawnLayerOptionHead : PawnLayerOption {
         public override string Label {
             get {
-                return HeadType.Label;
+                return HeadType.label;
             }
             set {
                 throw new NotImplementedException();
             }
         }
-        public CustomHeadType HeadType {
+        public HeadTypeDef HeadType {
             get;
             set;
         }

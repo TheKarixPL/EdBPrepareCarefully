@@ -47,7 +47,7 @@ namespace EdB.PrepareCarefully {
         // A GUID provides a unique identifier for the CustomPawn.
         protected string id;
 
-        protected CustomHeadType headType;
+        protected HeadTypeDef headType;
 
         protected List<Implant> implants = new List<Implant>();
         protected List<Injury> injuries = new List<Injury>();
@@ -280,7 +280,7 @@ namespace EdB.PrepareCarefully {
             }
 
             // Initialize head type.
-            CustomHeadType headType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadTypeForPawn(pawn);
+            HeadTypeDef headType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadTypeForPawn(pawn);
             if (headType != null) {
                 this.headType = headType;
             }
@@ -1147,18 +1147,14 @@ namespace EdB.PrepareCarefully {
             UpdateSkillLevelsForNewBackstoryOrTrait();
         }
 
-        public CustomHeadType HeadType {
+        public HeadTypeDef HeadType {
             get {
                 return headType;
             }
             set {
                 this.headType = value;
                 //Logger.Debug("Setting pawn headType to " + value);
-                this.pawn.story.headType = value.HeadType;
-                ThingComp alienComp = ProviderAlienRaces.FindAlienCompForPawn(pawn);
-                if (alienComp != null) {
-                    ReflectionUtil.GetPublicField(alienComp, "crownType").SetValue(alienComp, headType.AlienCrownType);
-                }
+                this.pawn.story.headType = value;
                 ResetCachedHead();
                 MarkPortraitAsDirty();
             }
@@ -1380,15 +1376,15 @@ namespace EdB.PrepareCarefully {
         }
 
         protected void ResetCachedHead() {
-            /* if (headType != null) {
+            if (headType != null) {
                 // Get the matching head type for the pawn's current gender.  We do this in case the user switches the
                 // gender, swapping to the correct head type if necessary.
-                CustomHeadType filteredHeadType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadTypeForGender(pawn.def, headType, Gender);
+                HeadTypeDef filteredHeadType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadTypeForPawn(pawn);
                 if (filteredHeadType == null) {
                     Logger.Warning("No filtered head type found"); //TODO
                 }
-                SetHeadGraphicPathOnPawn(pawn, filteredHeadType.GraphicPath);
-            } */
+                SetHeadGraphicPathOnPawn(pawn, filteredHeadType.graphicPath);
+            }
         }
 
         protected void ResetGender() {

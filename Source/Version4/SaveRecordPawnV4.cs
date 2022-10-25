@@ -131,8 +131,6 @@ namespace EdB.PrepareCarefully {
             if (alienComp != null) {
                 alien = new SaveRecordAlienV4();
                 alien.crownType = ProviderAlienRaces.GetCrownTypeFromComp(alienComp);
-                alien.skinColor = ProviderAlienRaces.GetSkinColorFromComp(alienComp);
-                alien.skinColorSecond = ProviderAlienRaces.GetSkinColorSecondFromComp(alienComp);
                 alien.hairColorSecond = ProviderAlienRaces.GetHairColorSecondFromComp(alienComp);
             }
         }
