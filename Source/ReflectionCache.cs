@@ -10,8 +10,6 @@ using Verse;
 namespace EdB.PrepareCarefully {
     public class ReflectionCache {
         private static ReflectionCache instance;
-
-        public MethodInfo GraphicDatabaseHeadRecords_BuildDatabaseIfNecessary { get; set; }
         public MethodInfo CharacterCardUtility_WorkTagsFrom { get; set; }
         public MethodInfo GenFilePaths_FolderUnderSaveData { get; set; }
         public MethodInfo PawnBioAndNameGenerator_BioSelectionWeight { get; set; }
@@ -40,7 +38,6 @@ namespace EdB.PrepareCarefully {
 
         public void Initialize() {
             CharacterCardUtility_WorkTagsFrom = ReflectionUtil.RequiredMethod(typeof(CharacterCardUtility), "WorkTagsFrom");
-            GraphicDatabaseHeadRecords_BuildDatabaseIfNecessary = ReflectionUtil.RequiredMethod(typeof(GraphicDatabaseHeadRecords), "BuildDatabaseIfNecessary");
             GenFilePaths_FolderUnderSaveData = ReflectionUtil.RequiredMethod(typeof(GenFilePaths), "FolderUnderSaveData", new Type[] { typeof(string) });
 
             PawnBioAndNameGenerator_GetBackstoryCategoryFiltersFor = ReflectionUtil.RequiredMethod(typeof(PawnBioAndNameGenerator), "GetBackstoryCategoryFiltersFor",
