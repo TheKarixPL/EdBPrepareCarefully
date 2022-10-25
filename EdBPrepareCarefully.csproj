@@ -119,7 +119,6 @@
     <Compile Include="Source\FilterBackstoryNoPenalties.cs" />
     <Compile Include="Source\FilterBackstorySkillAdjustment.cs" />
     <Compile Include="Source\GenStep_CustomScatterThings.cs" />
-    <Compile Include="Source\CustomHeadType.cs" />
     <Compile Include="Source\IRelationshipWorker.cs" />
     <Compile Include="Source\LabelTrimmer.cs" />
     <Compile Include="Source\OptionsApparel.cs" />
