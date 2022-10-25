@@ -43,15 +43,18 @@ namespace EdB.PrepareCarefully {
         private Color ColorChild = new Color(22f / 255f, 22f / 255f, 23f / 255f);
         private Color ColorChildEmpty = new Color(22f / 255f, 22f / 255f, 23f / 255f, 0.40f);
 
-        private HashSet<Backstory> visibleBackstories = new HashSet<Backstory>();
+        private HashSet<BackstoryDef> visibleBackstories = new HashSet<BackstoryDef>();
 
         public PanelRelationshipsParentChild() {
             // TODO: Pull this out and put it in a utility somewhere, i.e. ProviderBackstory.
-            foreach (Backstory backstory in BackstoryDatabase.allBackstories.Values) {
-                if (backstory.identifier.StartsWith("FactionLeader")) {
-                    visibleBackstories.Add(backstory);
+            SolidBioDatabase.allBios.ForEach(bio => {
+                if (bio.childhood.identifier.StartsWith("FactionLeader")) {
+                    visibleBackstories.Add(bio.childhood);
                 }
-            }
+                if (bio.adulthood.identifier.StartsWith("FactionLeader")) {
+                    visibleBackstories.Add(bio.adulthood);
+                }
+            });
         }
         public override string PanelHeader {
             get {

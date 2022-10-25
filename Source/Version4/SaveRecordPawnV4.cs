@@ -190,8 +190,8 @@ namespace EdB.PrepareCarefully {
             return DefDatabase<HairDef>.GetNamedSilentFail(name);
         }
 
-        public Backstory FindBackstory(string name) {
-            return BackstoryDatabase.allBackstories.Values.ToList().Find((Backstory b) => {
+        public BackstoryDef FindBackstory(string name) {
+            return SolidBioDatabase.allBios.Aggregate(new List<BackstoryDef>(), (acc, bio) => acc.Concat(new[] {bio.adulthood, bio.childhood}).ToList()).Find((BackstoryDef b) => {
                 return b.identifier.Equals(name);
             });
         }

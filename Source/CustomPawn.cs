@@ -42,7 +42,7 @@ namespace EdB.PrepareCarefully {
         // Keep track of the most recently selected adulthood option so that if the user updates the pawn's
         // age in a way that switches them back and forth from adult to child (which nulls out the adulthood
         // value in the Pawn), we can remember what the value was and restore it.
-        protected Backstory lastSelectedAdulthoodBackstory = null;
+        protected BackstoryDef lastSelectedAdulthoodBackstory = null;
 
         // A GUID provides a unique identifier for the CustomPawn.
         protected string id;
@@ -294,7 +294,7 @@ namespace EdB.PrepareCarefully {
             ResetCachedHead();
 
             // Copy the adulthood backstory or set a random one if it's null.
-            this.LastSelectedAdulthoodBackstory = pawn.story.adulthood;
+            this.LastSelectedAdulthoodBackstory = pawn.story.Adulthood;
 
             // Evaluate all hediffs.
             InitializeInjuriesAndImplantsFromPawn(pawn);
@@ -428,7 +428,7 @@ namespace EdB.PrepareCarefully {
             }
         }
 
-        public Backstory LastSelectedAdulthoodBackstory {
+        public BackstoryDef LastSelectedAdulthoodBackstory {
             get {
                 if (lastSelectedAdulthoodBackstory != null) {
                     return lastSelectedAdulthoodBackstory;
@@ -510,14 +510,14 @@ namespace EdB.PrepareCarefully {
 
         protected int ComputeSkillModifier(SkillDef def) {
             int value = 0;
-            if (pawn.story != null && pawn.story.childhood != null && pawn.story.childhood.skillGainsResolved != null) {
-                if (pawn.story.childhood.skillGainsResolved.ContainsKey(def)) {
-                    value += pawn.story.childhood.skillGainsResolved[def];
+            if (pawn.story != null && pawn.story.Childhood != null && pawn.story.Childhood.skillGains != null) {
+                if (pawn.story.Childhood.skillGains.ContainsKey(def)) {
+                    value += pawn.story.Childhood.skillGains[def];
                 }
             }
-            if (pawn.story != null && pawn.story.adulthood != null && pawn.story.adulthood.skillGainsResolved != null) {
-                if (pawn.story.adulthood.skillGainsResolved.ContainsKey(def)) {
-                    value += pawn.story.adulthood.skillGainsResolved[def];
+            if (pawn.story != null && pawn.story.Adulthood != null && pawn.story.Adulthood.skillGains != null) {
+                if (pawn.story.Adulthood.skillGains.ContainsKey(def)) {
+                    value += pawn.story.Adulthood.skillGains[def];
                 }
             }
             foreach (Trait trait in this.Pawn.story.traits.allTraits) {
@@ -749,10 +749,10 @@ namespace EdB.PrepareCarefully {
         public string Label {
             get {
                 NameTriple name = pawn.Name as NameTriple;
-                if (pawn.story.adulthood == null) {
+                if (pawn.story.Adulthood == null) {
                     return name.Nick;
                 }
-                return name.Nick + ", " + pawn.story.adulthood.TitleShortFor(Gender);
+                return name.Nick + ", " + pawn.story.Adulthood.TitleShortFor(Gender);
             }
         }
 
@@ -985,10 +985,10 @@ namespace EdB.PrepareCarefully {
         public string ProfessionLabelShort {
             get {
                 if (IsAdult) {
-                    return Adulthood.TitleShortCapFor(Gender);
+                    return Adulthood.TitleShortFor(Gender);
                 }
                 else {
-                    return Childhood.TitleShortCapFor(Gender);
+                    return Childhood.TitleShortFor(Gender);
                 }
             }
         }
@@ -1109,29 +1109,29 @@ namespace EdB.PrepareCarefully {
             }
         }
 
-        public Backstory Childhood {
+        public BackstoryDef Childhood {
             get {
-                return pawn.story.childhood;
+                return pawn.story.Childhood;
             }
             set {
-                pawn.story.childhood = value;
+                pawn.story.Childhood = value;
                 ResetBackstories();
             }
         }
 
-        public Backstory Adulthood {
+        public BackstoryDef Adulthood {
             get {
-                return pawn.story.adulthood;
+                return pawn.story.Adulthood;
             }
             set {
                 if (value != null) {
                     LastSelectedAdulthoodBackstory = value;
                 }
                 if (IsAdult) {
-                    pawn.story.adulthood = value;
+                    pawn.story.Adulthood = value;
                 }
                 else {
-                    pawn.story.adulthood = null;
+                    pawn.story.Adulthood = null;
                 }
                 ResetBackstories();
             }
@@ -1370,12 +1370,12 @@ namespace EdB.PrepareCarefully {
                 long years = pawn.ageTracker.AgeBiologicalYears;
                 long diff = value - years;
                 pawn.ageTracker.AgeBiologicalTicks += diff * 3600000L;
-                if (IsAdult && pawn.story.adulthood == null) {
-                    pawn.story.adulthood = LastSelectedAdulthoodBackstory;
+                if (IsAdult && pawn.story.Adulthood == null) {
+                    pawn.story.Adulthood = LastSelectedAdulthoodBackstory;
                     ResetBackstories();
                 }
-                else if (!IsAdult && pawn.story.adulthood != null) {
-                    pawn.story.adulthood = null;
+                else if (!IsAdult && pawn.story.Adulthood != null) {
+                    pawn.story.Adulthood = null;
                     ResetBackstories();
                 }
                 pawn.ClearCachedLifeStage();
@@ -1385,7 +1385,7 @@ namespace EdB.PrepareCarefully {
         }
 
         protected void ResetCachedHead() {
-            if (headType != null) {
+            /* if (headType != null) {
                 // Get the matching head type for the pawn's current gender.  We do this in case the user switches the
                 // gender, swapping to the correct head type if necessary.
                 CustomHeadType filteredHeadType = PrepareCarefully.Instance.Providers.HeadTypes.FindHeadTypeForGender(pawn.def, headType, Gender);
@@ -1393,7 +1393,7 @@ namespace EdB.PrepareCarefully {
                     Logger.Warning("No filtered head type found"); //TODO
                 }
                 SetHeadGraphicPathOnPawn(pawn, filteredHeadType.GraphicPath);
-            }
+            } */
         }
 
         protected void ResetGender() {
