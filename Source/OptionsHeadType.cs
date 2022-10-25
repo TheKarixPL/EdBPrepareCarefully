@@ -25,7 +25,7 @@ namespace EdB.PrepareCarefully {
         }
         public IEnumerable<HeadTypeDef> GetHeadTypesForGender(Gender gender) {
             return headTypes.Where((HeadTypeDef headType) => {
-                return (headType.gender == gender || headType.gender == null);
+                return (headType.gender == gender);
             });
         }
         public HeadTypeDef FindHeadTypeForPawn(Pawn pawn) {
