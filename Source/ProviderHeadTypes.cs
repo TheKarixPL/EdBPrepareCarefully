@@ -12,6 +12,9 @@ using Verse.Sound;
 
 namespace EdB.PrepareCarefully {
     public class ProviderHeadTypes {
+        public ProviderAlienRaces AlienRaceProvider {
+            get; set;
+        }
         public IEnumerable<HeadTypeDef> GetHeadTypes(ThingDef race, Gender gender) {
             OptionsHeadType headTypes = InitializeHeadTypes();
             return headTypes.GetHeadTypesForGender(gender);
