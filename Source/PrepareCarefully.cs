@@ -18,7 +18,7 @@ namespace EdB.PrepareCarefully {
     }
 
     public class PrepareCarefully {
-        public static readonly Version MinimumGameVersion = new Version(1, 3, 3102);
+        public static readonly Version MinimumGameVersion = new Version(1, 4, 3525);
         protected static PrepareCarefully instance = null;
         public static PrepareCarefully Instance {
             get {
