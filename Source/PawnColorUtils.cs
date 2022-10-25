@@ -27,23 +27,16 @@ namespace EdB.PrepareCarefully {
         public static void InitializeColors() {
             List<float> values = new List<float>();
 
-            // Iterate all values from 0.0f to 1.0f, using increments of 0.01f, to get the left index for each value.
-            // Use this technique to construct a list of all of the indexes and their values.  Once we have the list
-            // of indexes and their values, we can use the GetSkinColor() method to get the actual colors.
-            int currentIndex = 0;
+            // Got these from ../RimWorld/Data/Core/Defs/GeneDefs/GeneDefs_Endogenes /shrug
             values.Add(0.0f);
-            float f = 0.01f;
-            int counter = 1;
-            while (f < 1.0f) {
-                int result = Reflection.PawnSkinColors.GetSkinDataIndexOfMelanin(f);
-                if (result != currentIndex) {
-                    currentIndex = result;
-                    values.Add(f);
-                }
-                counter++;
-                double d = (double)counter / 100.0;
-                f = (float)d;
-            }
+            values.Add(0.1f);
+            values.Add(0.25f);
+            values.Add(0.45f);
+            values.Add(0.58f);
+            values.Add(0.63f);
+            values.Add(0.75f);
+            values.Add(0.83f);
+            values.Add(0.9f);
             values.Add(1.0f);
 
             // Allocate the arrays and fill them with the correct values.

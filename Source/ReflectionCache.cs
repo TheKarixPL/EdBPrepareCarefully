@@ -16,7 +16,6 @@ namespace EdB.PrepareCarefully {
         public MethodInfo PawnBioAndNameGenerator_GetBackstoryCategoryFiltersFor { get; set; }
         public MethodInfo PawnBioAndNameGenerator_IsBioUseable { get; set; }
         public MethodInfo PawnBioAndNameGenerator_TryGetRandomUnusedSolidBioFor { get; set; }
-        public MethodInfo PawnSkinColors_GetSkinDataIndexOfMelanin { get; set; }
         public MethodInfo ScenPart_ForcedHediff_PossibleHediffs { get; set; }
         public MethodInfo ScenPart_StartingAnimal_RandomPets { get; set; }
 
@@ -48,7 +47,6 @@ namespace EdB.PrepareCarefully {
             PawnBioAndNameGenerator_IsBioUseable = ReflectionUtil.RequiredMethod(typeof(PawnBioAndNameGenerator), "IsBioUseable");
             PawnBioAndNameGenerator_BioSelectionWeight = ReflectionUtil.RequiredMethod(typeof(PawnBioAndNameGenerator), "BioSelectionWeight");
 
-            PawnSkinColors_GetSkinDataIndexOfMelanin = ReflectionUtil.RequiredMethod(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin", new Type[] { typeof(float) });
             ScenPart_StartingAnimal_RandomPets = ReflectionUtil.RequiredMethod(typeof(ScenPart_StartingAnimal), "RandomPets");
             ScenPart_ForcedHediff_PossibleHediffs = ReflectionUtil.RequiredMethod(typeof(ScenPart_ForcedHediff), "PossibleHediffs");
 

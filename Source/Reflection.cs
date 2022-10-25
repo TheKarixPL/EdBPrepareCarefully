@@ -29,11 +29,6 @@ namespace EdB.PrepareCarefully {
                 return (IEnumerable<HediffDef>)ReflectionCache.Instance.ScenPart_ForcedHediff_PossibleHediffs.Invoke(scenPart, null);
             }
         }
-        public static class PawnSkinColors {
-            public static int GetSkinDataIndexOfMelanin(float value) {
-                return (int)ReflectionCache.Instance.PawnSkinColors_GetSkinDataIndexOfMelanin.Invoke(null, new object[] { value });
-            }
-        }
         public static class Pawn {
             public static void ClearCachedDisabledWorkTypes(Verse.Pawn pawn) {
                 ReflectionCache.Instance.Pawn_CachedDisabledWorkTypes.SetValue(pawn, null);
