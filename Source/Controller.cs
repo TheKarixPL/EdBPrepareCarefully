@@ -141,7 +141,8 @@ namespace EdB.PrepareCarefully {
 
         protected void PrepareColonists() {
             List<Pawn> colonists = new List<Pawn>();
-            foreach (var customPawn in state.Pawns) {
+            Dictionary<Pawn, List<ThingDefCount>> startingPossessions = new Dictionary<Pawn, List<ThingDefCount>>();
+            state.Pawns.ForEach(customPawn => {
                 if (customPawn.Type == CustomPawnType.Colonist) {
                     customPawn.Pawn.SetFactionDirect(Faction.OfPlayer);
                     if (customPawn.Pawn.workSettings == null) {
@@ -149,10 +150,13 @@ namespace EdB.PrepareCarefully {
                     }
                     customPawn.Pawn.workSettings.EnableAndInitialize();
                     colonists.Add(customPawn.Pawn);
+                    startingPossessions.Add(customPawn.Pawn, new List<ThingDefCount>());
                 }
-            }
+            });
+
             Find.GameInitData.startingPawnCount = colonists.Count;
             Find.GameInitData.startingAndOptionalPawns = colonists;
+            Find.GameInitData.startingPossessions = startingPossessions;
         }
 
         protected void PrepareWorldPawns() {
