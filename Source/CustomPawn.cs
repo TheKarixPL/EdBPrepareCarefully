@@ -1320,12 +1320,23 @@ namespace EdB.PrepareCarefully {
             }
         }
 
+        private Gene getSkinColorGene() {
+            Gene skinColorGene = new Gene();
+            pawn.genes.Endogenes.ForEach(gene => {
+                if (gene.def.endogeneCategory == EndogeneCategory.Melanin) skinColorGene = gene;
+            });
+            return skinColorGene;
+        }
         public float MelaninLevel {
             get {
-                return pawn.genes.GetMelaninGene().minMelanin;
+                return getSkinColorGene().def.minMelanin;
             }
             set {
-                pawn.genes.GetMelaninGene().minMelanin = value;
+                Gene currentSkinColorGene = getSkinColorGene();
+                GeneDef newSkinColorGene = PawnSkinColors.GetSkinColorGene(value);
+                Pawn_GeneTracker geneTracker = pawn.genes;
+                geneTracker.RemoveGene(currentSkinColorGene);
+                geneTracker.AddGene(newSkinColorGene, false); 
                 MarkPortraitAsDirty();
             }
         }
