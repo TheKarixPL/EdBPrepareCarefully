@@ -864,7 +864,7 @@ namespace EdB.PrepareCarefully {
 
         protected void SelectNextBodyType(CustomPawn customPawn, int direction) {
             ProviderBodyTypes provider = PrepareCarefully.Instance.Providers.BodyTypes;
-            List<BodyTypeDef> bodyTypes = provider.GetBodyTypesForPawn(customPawn);
+            List<BodyTypeDef> bodyTypes = provider.GetBodyTypesForPawn(customPawn.Pawn.def, customPawn.Gender, customPawn.Pawn.DevelopmentalStage);
             int index = bodyTypes.IndexOf(customPawn.BodyType);
             if (index == -1) {
                 Logger.Warning("Could not find the current pawn's body type in list of available options: " + customPawn.BodyType);
