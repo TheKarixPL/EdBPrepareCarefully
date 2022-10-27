@@ -1369,10 +1369,19 @@ namespace EdB.PrepareCarefully {
                     pawn.story.Adulthood = null;
                     ResetBackstories();
                 }
+                int age = pawn.ageTracker.AgeBiologicalYears;
+                if (age < 19) ResetCachedBody();
                 pawn.ClearCachedLifeStage();
                 pawn.ClearCachedHealth();
                 MarkPortraitAsDirty();
             }
+        }
+
+        protected void ResetCachedBody() {
+            ProviderBodyTypes bodyProvider = PrepareCarefully.Instance.Providers.BodyTypes;
+            List<BodyTypeDef> bodyTypesForPawn = bodyProvider.GetBodyTypesForPawn(pawn.def, pawn.gender, pawn.DevelopmentalStage);
+            if (bodyTypesForPawn.Contains(this.BodyType)) return;
+            this.BodyType = bodyTypesForPawn.First();
         }
 
         protected void ResetCachedHead() {
