@@ -64,6 +64,8 @@ namespace EdB.PrepareCarefully {
             if (ideo != null) {
                 FieldIdeo.Label = labelTrimmer.TrimLabelIfNeeded(ideo.name);
                 FieldIdeo.Tip = ideo.description;
+            } else {
+                Logger.Warning("ideo is null when trying to draw PanelIdeo");
             }
             FieldIdeo.Enabled = true;
             FieldIdeo.ClickAction = () => {
@@ -127,7 +129,9 @@ namespace EdB.PrepareCarefully {
             if (ideo != null) {
                 Ideo currentIdeo = ideo.Ideo;
                 float certainty = ideo.Certainty;
-                Ideo newIdeo = Find.IdeoManager.IdeosInViewOrder.Where(i => i != currentIdeo).RandomElement();
+                IdeoGenerationParms genParms = new IdeoGenerationParms(Find.FactionManager.OfPlayer.def);
+                Ideo newIdeo = IdeoGenerator.GenerateIdeo(genParms);
+                Find.IdeoManager.Add(newIdeo);
                 ideo.SetIdeo(newIdeo);
                 pawn.Certainty = certainty;
             }

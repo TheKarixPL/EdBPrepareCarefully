@@ -38,12 +38,12 @@ namespace EdB.PrepareCarefully {
             }
             return backstoryHashSetLookup[kindDef.defName];
         }
-        public List<BackstoryDef> AllChildhookBackstories {
+        public List<BackstoryDef> AllChildhoodBackstories {
             get {
                 return sortedChildhoodBackstories;
             }
         }
-        public List<BackstoryDef> AllAdulthookBackstories {
+        public List<BackstoryDef> AllAdulthoodBackstories {
             get {
                 return sortedAdulthoodBackstories;
             }
@@ -90,6 +90,18 @@ namespace EdB.PrepareCarefully {
         // that invalidates this rewrite. This is a modified version of that method but with the first argument a PawnKindDef
         // instead of a Pawn and with logging removed.
         private List<BackstoryCategoryFilter> GetBackstoryCategoryFiltersFor(PawnKindDef kindDef, FactionDef faction) {
+            if (kindDef.pawnGroupDevelopmentStage.HasValue) {
+                if (kindDef.pawnGroupDevelopmentStage.Value == DevelopmentalStage.Baby || kindDef.pawnGroupDevelopmentStage.Value == DevelopmentalStage.Newborn) {
+                    return new List<BackstoryCategoryFilter>(){ 
+                        new BackstoryCategoryFilter() { categories = new List<string>() { "Newborn" }, commonality = 1f } 
+                    };
+                }
+                if (kindDef.pawnGroupDevelopmentStage.Value == DevelopmentalStage.Child) {
+                    return new List<BackstoryCategoryFilter>(){
+                        new BackstoryCategoryFilter() { categories = new List<string>() { "Child" }, commonality = 1f }
+                    };
+                }
+            }
             if (!kindDef.backstoryFiltersOverride.NullOrEmpty<BackstoryCategoryFilter>()) {
                 return kindDef.backstoryFiltersOverride;
             }
@@ -120,11 +132,7 @@ namespace EdB.PrepareCarefully {
 
         private HashSet<string> AllBackstoryCategoriesFromFilterList(List<BackstoryCategoryFilter> filterList) {
             HashSet<string> result = new HashSet<string>();
-            foreach (var filter in filterList) {
-                foreach (var category in filter.categories) {
-                    result.Add(category);
-                }
-            }
+            filterList.ForEach(f => f.categories.ForEach(c => result.Add(c)));
             return result;
         }
     }

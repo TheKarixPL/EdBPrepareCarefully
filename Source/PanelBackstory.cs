@@ -183,7 +183,7 @@ namespace EdB.PrepareCarefully {
             Filter<BackstoryDef> filterToRemove = null;
             bool filterListDirtyFlag = true;
             List<BackstoryDef> fullOptionsList = slot == BackstorySlot.Childhood ?
-                    this.providerBackstories.AllChildhookBackstories : this.providerBackstories.AllAdulthookBackstories;
+                    this.providerBackstories.AllChildhoodBackstories : this.providerBackstories.AllAdulthoodBackstories;
             List<BackstoryDef> filteredBackstories = new List<BackstoryDef>(fullOptionsList.Count);
             Dialog_Options<BackstoryDef> dialog = new Dialog_Options<BackstoryDef>(filteredBackstories) {
                 NameFunc = (BackstoryDef backstory) => {
@@ -294,11 +294,10 @@ namespace EdB.PrepareCarefully {
         }
 
         protected void NextBackstory(CustomPawn pawn, BackstorySlot slot, int direction) {
-            BackstoryDef backstory;
-            List<BackstoryDef> backstories;
-            PopulateBackstoriesFromSlot(pawn, slot, out backstories, out backstory);
+            BackstoryDef currentBackstory = slot == BackstorySlot.Childhood ? pawn.Childhood : pawn.Adulthood;
+            List<BackstoryDef> backstories = slot == BackstorySlot.Childhood ? providerBackstories.AllChildhoodBackstories : providerBackstories.GetAdulthoodBackstoriesForPawn(pawn);
 
-            int currentIndex = FindBackstoryIndex(pawn, slot);
+            int currentIndex = backstories.IndexOf(currentBackstory);
             currentIndex += direction;
             if (currentIndex >= backstories.Count) {
                 currentIndex = 0;
@@ -307,20 +306,6 @@ namespace EdB.PrepareCarefully {
                 currentIndex = backstories.Count - 1;
             }
             BackstoryUpdated(slot, backstories[currentIndex]);
-        }
-
-        protected int FindBackstoryIndex(CustomPawn pawn, BackstorySlot slot) {
-            BackstoryDef backstory;
-            List<BackstoryDef> backstories;
-            PopulateBackstoriesFromSlot(pawn, slot, out backstories, out backstory);
-            return backstories.IndexOf(backstory);
-        }
-
-        protected void PopulateBackstoriesFromSlot(CustomPawn pawn, BackstorySlot slot, out List<BackstoryDef> backstories,
-                out BackstoryDef backstory) {
-            backstory = (slot == BackstorySlot.Childhood) ? pawn.Childhood : pawn.Adulthood;
-            backstories = (slot == BackstorySlot.Childhood) ? providerBackstories.GetChildhoodBackstoriesForPawn(pawn)
-                : providerBackstories.GetAdulthoodBackstoriesForPawn(pawn);
         }
     }
 }

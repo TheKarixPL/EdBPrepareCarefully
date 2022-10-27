@@ -1388,7 +1388,7 @@ namespace EdB.PrepareCarefully {
         }
 
         protected void ResetGender() {
-            List<BodyTypeDef> bodyTypes = PrepareCarefully.Instance.Providers.BodyTypes.GetBodyTypesForPawn(this);
+            List<BodyTypeDef> bodyTypes = PrepareCarefully.Instance.Providers.BodyTypes.GetBodyTypesForPawn(this.Pawn.def, this.Gender, this.Pawn.DevelopmentalStage);
             if (pawn.gender == Gender.Female) {
                 if (HairDef.styleGender == StyleGender.Male) {
                     HairDef = DefDatabase<HairDef>.AllDefsListForReading.Find((HairDef def) => {

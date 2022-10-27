@@ -20,26 +20,26 @@ namespace EdB.PrepareCarefully {
         public List<PawnLayer> GetLayersForPawn(CustomPawn pawn) {
             List<PawnLayer> result = null;
             if (!pawnLayerCache.TryGetValue(new Pair<ThingDef, Gender>(pawn.Pawn.def, pawn.Gender), out result)) {
-                result = InitializePawnLayers(pawn.Pawn.def, pawn.Gender);
+                result = InitializePawnLayers(pawn.Pawn.def, pawn.Gender, pawn.Pawn.DevelopmentalStage);
                 pawnLayerCache.Add(new Pair<ThingDef, Gender>(pawn.Pawn.def, pawn.Gender), result);
             }
             return result;
         }
-        public List<PawnLayer> InitializePawnLayers(ThingDef pawnDef, Gender gender) {
+        public List<PawnLayer> InitializePawnLayers(ThingDef pawnDef, Gender gender, DevelopmentalStage developmentalStage) {
             AlienRace race = PrepareCarefully.Instance.Providers.AlienRaces.GetAlienRace(pawnDef);
             if (race == null) {
-                return InitializeDefaultPawnLayers(pawnDef, gender);
+                return InitializeDefaultPawnLayers(pawnDef, gender, developmentalStage);
             }
             else {
-                return InitializeAlienPawnLayers(pawnDef, gender, race);
+                return InitializeAlienPawnLayers(pawnDef, gender, race, developmentalStage);
             }
         }
-        private List<PawnLayer> InitializeDefaultPawnLayers(ThingDef pawnDef, Gender gender) {
+        private List<PawnLayer> InitializeDefaultPawnLayers(ThingDef pawnDef, Gender gender, DevelopmentalStage developmentalStage) {
             List<PawnLayer> defaultLayers = new List<PawnLayer>() {
                 InitializeHairLayer(pawnDef, gender),
                 InitializeBeardLayer(pawnDef, gender),
                 InitializeHeadLayer(pawnDef, gender),
-                InitializeBodyLayer(pawnDef, gender)
+                InitializeBodyLayer(pawnDef, gender, developmentalStage)
             };
 
             if (ModLister.IdeologyInstalled) {
@@ -59,7 +59,7 @@ namespace EdB.PrepareCarefully {
 
             return defaultLayers;
         }
-        private List<PawnLayer> InitializeAlienPawnLayers(ThingDef pawnDef, Gender gender, AlienRace race) {
+        private List<PawnLayer> InitializeAlienPawnLayers(ThingDef pawnDef, Gender gender, AlienRace race, DevelopmentalStage developmentalStage) {
             List<PawnLayer> layers = new List<PawnLayer>();
             if (race.HasHair) {
                 layers.Add(InitializeHairLayer(pawnDef, gender));
@@ -68,7 +68,7 @@ namespace EdB.PrepareCarefully {
                 layers.Add(InitializeBeardLayer(pawnDef, gender));
             }
             layers.Add(InitializeHeadLayer(pawnDef, gender));
-            layers.Add(InitializeBodyLayer(pawnDef, gender));
+            layers.Add(InitializeBodyLayer(pawnDef, gender, developmentalStage));
 
             if (race.Addons != null) {
                 OptionsHair optionsHair = PrepareCarefully.Instance.Providers.Hair.GetHairsForRace(pawnDef);
@@ -187,14 +187,14 @@ namespace EdB.PrepareCarefully {
             }
             return options;
         }
-        private PawnLayer InitializeBodyLayer(ThingDef pawnDef, Gender gender) {
+        private PawnLayer InitializeBodyLayer(ThingDef pawnDef, Gender gender, DevelopmentalStage developmentalStage) {
             PawnLayer result = new PawnLayerBody() { Name = "Body", Label = ("EdB.PC.Pawn.PawnLayer.BodyType").Translate() };
-            result.Options = InitializeBodyOptions(pawnDef, gender);
+            result.Options = InitializeBodyOptions(pawnDef, gender, developmentalStage);
             return result;
         }
-        private List<PawnLayerOption> InitializeBodyOptions(ThingDef pawnDef, Gender gender) {
+        private List<PawnLayerOption> InitializeBodyOptions(ThingDef pawnDef, Gender gender, DevelopmentalStage developmentalStage) {
             List<PawnLayerOption> options = new List<PawnLayerOption>();
-            foreach (var bodyType in PrepareCarefully.Instance.Providers.BodyTypes.GetBodyTypesForPawn(pawnDef, gender)) {
+            foreach (var bodyType in PrepareCarefully.Instance.Providers.BodyTypes.GetBodyTypesForPawn(pawnDef, gender, developmentalStage)) {
                 PawnLayerOptionBody option = new PawnLayerOptionBody();
                 option.BodyTypeDef = bodyType;
                 options.Add(option);

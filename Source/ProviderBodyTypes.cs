@@ -29,19 +29,13 @@ namespace EdB.PrepareCarefully {
         public ProviderAlienRaces AlienRaceProvider {
             get; set;
         }
-        public List<BodyTypeDef> GetBodyTypesForPawn(CustomPawn pawn) {
-            return GetBodyTypesForPawn(pawn.Pawn);
-        }
-        public List<BodyTypeDef> GetBodyTypesForPawn(Pawn pawn) {
-            return GetBodyTypesForPawn(pawn.def, pawn.gender);
-        }
-        public List<BodyTypeDef> GetBodyTypesForPawn(ThingDef race, Gender gender) {
+        public List<BodyTypeDef> GetBodyTypesForPawn(ThingDef race, Gender gender, DevelopmentalStage developmentalStage) {
             OptionsBodyType bodyTypes;
             if (!raceBodyTypeLookup.TryGetValue(race, out bodyTypes)) {
                 bodyTypes = InitializeBodyTypes(race);
                 raceBodyTypeLookup.Add(race, bodyTypes);
             }
-            return bodyTypes.GetBodyTypes(gender);
+            return bodyTypes.GetBodyTypes(gender, developmentalStage);
         }
         public string GetBodyTypeLabel(BodyTypeDef bodyType) {
             if (bodyType.label.NullOrEmpty()) {
@@ -75,10 +69,17 @@ namespace EdB.PrepareCarefully {
         protected OptionsBodyType InitializeHumanlikeBodyTypes() {
             OptionsBodyType result = new OptionsBodyType();
             foreach (BodyTypeDef d in DefDatabase<BodyTypeDef>.AllDefs) {
-                if (d != BodyTypeDefOf.Female) {
+                bool babyOrChild = d == BodyTypeDefOf.Baby || d == BodyTypeDefOf.Child;
+                if (d == BodyTypeDefOf.Baby) {
+                    result.BabyBodyTypes.Add(d);
+                }
+                if (d == BodyTypeDefOf.Child) {
+                    result.ChildBodyTypes.Add(d);
+                }
+                if (d != BodyTypeDefOf.Female && babyOrChild == false) {
                     result.MaleBodyTypes.Add(d);
                 }
-                if (d != BodyTypeDefOf.Male) {
+                if (d != BodyTypeDefOf.Male && babyOrChild == false) {
                     result.FemaleBodyTypes.Add(d);
                 }
                 result.NoGenderBodyTypes.Add(d);

@@ -13,6 +13,8 @@ namespace EdB.PrepareCarefully {
         protected List<BodyTypeDef> maleBodyTypes = new List<BodyTypeDef>();
         protected List<BodyTypeDef> femaleBodyTypes = new List<BodyTypeDef>();
         protected List<BodyTypeDef> noGenderBodyTypes = new List<BodyTypeDef>();
+        protected List<BodyTypeDef> babyBodyTypes = new List<BodyTypeDef>();
+        protected List<BodyTypeDef> childBodyTypes = new List<BodyTypeDef>();
         public OptionsBodyType() {
         }
         public List<BodyTypeDef> MaleBodyTypes {
@@ -39,7 +41,26 @@ namespace EdB.PrepareCarefully {
                 noGenderBodyTypes = value;
             }
         }
-        public List<BodyTypeDef> GetBodyTypes(Gender gender) {
+        public List<BodyTypeDef> BabyBodyTypes {
+            get {
+                return babyBodyTypes;
+            }
+            set {
+                babyBodyTypes = value;
+            }
+        }
+        public List<BodyTypeDef> ChildBodyTypes {
+            get {
+                return childBodyTypes;
+            }
+            set {
+                childBodyTypes = value;
+            }
+        }
+        public List<BodyTypeDef> GetBodyTypes(Gender gender, DevelopmentalStage developmentalStage) {
+            if (developmentalStage == DevelopmentalStage.Baby || developmentalStage == DevelopmentalStage.Newborn) {
+                return babyBodyTypes;
+            }
             if (gender == Gender.Male) {
                 return maleBodyTypes;
             }
