@@ -39,10 +39,11 @@ namespace EdB.PrepareCarefully {
         protected string apparelConflictText = null;
         protected List<ApparelConflict> apparelConflicts = new List<ApparelConflict>();
 
-        // Keep track of the most recently selected adulthood option so that if the user updates the pawn's
-        // age in a way that switches them back and forth from adult to child (which nulls out the adulthood
-        // value in the Pawn), we can remember what the value was and restore it.
+        // Keep track of the most recently selected adulthood and certainty options so that if the user updates the pawn's
+        // age in a way that switches them back and forth from adult to child to baby (which will out the values
+        // in the Pawn), we can remember what the value was and restore it.
         protected BackstoryDef lastSelectedAdulthoodBackstory = null;
+        protected float lastSelectedCertainty = 0.0f;
 
         // A GUID provides a unique identifier for the CustomPawn.
         protected string id;
@@ -156,6 +157,7 @@ namespace EdB.PrepareCarefully {
                     if (current != value) {
                         pawn.ideo.Debug_ReduceCertainty(current - value);
                     }
+                    if (value != 0) lastSelectedCertainty = value;
                 }
             }
         }
@@ -1385,6 +1387,9 @@ namespace EdB.PrepareCarefully {
                 pawn.ClearCachedLifeStage();
                 pawn.ClearCachedHealth();
                 MarkPortraitAsDirty();
+                if (age > 2 && pawn.ideo.Certainty == 0.0f) {
+                    Certainty = lastSelectedCertainty;
+                };
             }
         }
 
