@@ -317,9 +317,9 @@ namespace EdB.PrepareCarefully {
             else {
                 pawn.MelaninLevel = PawnColorUtils.FindMelaninValueFromColor(record.skinColor);
             }
-
-            BackstoryDef backstory = FindBackstory(record.childhood);
-            if (backstory != null) {
+            //Check if the record for childhood before using 'FindBackstory'
+            if (record.childhood != null) {
+                BackstoryDef backstory = FindBackstory(record.childhood);
                 pawn.Childhood = backstory;
             }
             else {
@@ -327,7 +327,7 @@ namespace EdB.PrepareCarefully {
                 partialFailure = true;
             }
             if (record.adulthood != null) {
-                backstory = FindBackstory(record.adulthood);
+                BackstoryDef backstory = FindBackstory(record.adulthood);
                 if (backstory != null) {
                     pawn.Adulthood = backstory;
                 }
