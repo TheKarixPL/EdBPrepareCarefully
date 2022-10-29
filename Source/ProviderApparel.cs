@@ -13,6 +13,8 @@ namespace EdB.PrepareCarefully {
         protected Dictionary<ThingDef, OptionsApparel> apparelLookup = new Dictionary<ThingDef, OptionsApparel>();
         protected OptionsApparel humanlikeApparel;
         protected OptionsApparel noApparel = new OptionsApparel();
+        protected DevelopmentalStage oldDevelopmentalStage = DevelopmentalStage.None;
+        protected DevelopmentalStage currentDevelopmentalStage = DevelopmentalStage.None;
         public ProviderAlienRaces AlienRaceProvider {
             get; set;
         }
@@ -24,6 +26,9 @@ namespace EdB.PrepareCarefully {
             return apparel.GetApparel(layer);
         }
         public OptionsApparel GetApparelForRace(CustomPawn pawn) {
+            oldDevelopmentalStage = currentDevelopmentalStage;
+            currentDevelopmentalStage = pawn.Pawn.DevelopmentalStage;
+            if (currentDevelopmentalStage != oldDevelopmentalStage) apparelLookup.Clear();
             return GetApparelForRace(pawn.Pawn.def);
         }
         public OptionsApparel GetApparelForRace(ThingDef raceDef) {
@@ -104,7 +109,7 @@ namespace EdB.PrepareCarefully {
         }
         protected OptionsApparel HumanlikeApparel {
             get {
-                if (humanlikeApparel == null) {
+                if (humanlikeApparel == null || currentDevelopmentalStage != oldDevelopmentalStage) {
                     humanlikeApparel = InitializeHumanlikeApparel();
                 }
                 return humanlikeApparel;
@@ -135,7 +140,9 @@ namespace EdB.PrepareCarefully {
                     continue;
                 }
                 if (!nonHumanApparel.Contains(apparelDef.defName)) {
-                    AddApparelToOptions(result, apparelDef);
+                    if (apparelDef.apparel.developmentalStageFilter == currentDevelopmentalStage) {
+                        AddApparelToOptions(result, apparelDef);
+                    }
                 }
             }
             result.Sort();

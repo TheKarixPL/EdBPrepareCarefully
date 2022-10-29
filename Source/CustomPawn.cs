@@ -1398,6 +1398,7 @@ namespace EdB.PrepareCarefully {
             List<BodyTypeDef> bodyTypesForPawn = bodyProvider.GetBodyTypesForPawn(pawn.def, pawn.gender, pawn.DevelopmentalStage);
             if (bodyTypesForPawn.Contains(this.BodyType)) return;
             this.BodyType = bodyTypesForPawn.First();
+            ResetApparel();
         }
 
         protected void ResetCachedHead() {
@@ -1520,10 +1521,31 @@ namespace EdB.PrepareCarefully {
                 PawnGenerator.PostProcessGeneratedGear(a, targetPawn);
                 a.SetQuality(QualityCategory.Normal);
                 a.HitPoints = a.MaxHitPoints;
-                if (ApparelUtility.HasPartsToWear(targetPawn, a.def)) {
-                    targetPawn.apparel.Wear(a, false);
+
+                // TODO: change this dodgy way to handle changing apparel when Pawn.DevlopmentalStage changes.
+                if (ApparelUtility.HasPartsToWear(targetPawn, a.def) && targetPawn.story.bodyType.defName != "Baby") {
+                    if (a.def.apparel.developmentalStageFilter == pawn.DevelopmentalStage) {
+                        targetPawn.apparel.Wear(a, false);
+                    } else {
+                        Dictionary<string, List<string>> defaultsForLayers = new Dictionary<string, List<string>>();
+                        defaultsForLayers.Add("Pants", new List<string>() {"Pants", "Kid pants", "Kid romper"});
+                        defaultsForLayers.Add("TopClothingLayer", new List<string>() {"Kid parka", "Parka"});
+                        defaultsForLayers.Add("BottomClothingLayer", new List<string>() {"T-shirt", "Kid shirt", "Kid romper"});
+                        if (defaultsForLayers.TryGetValue(layer.Name, out List<string> defaultList)) {
+                            Apparel defaultApparel = developmenalStageEquivalentApparel(defaultList);
+                            targetPawn.apparel.Wear(defaultApparel, false);
+                        }
+                    }
                 }
             }
+        }
+
+        public Apparel developmenalStageEquivalentApparel(List<string> defaultsForLayers) {
+            List<EquipmentRecord> apparel = PrepareCarefully.Instance.EquipmentDatabase.Apparel;
+            EquipmentRecord item = apparel.Find(record => {
+                return defaultsForLayers.Any(s => s == record.def.LabelCap) && record.def.apparel.developmentalStageFilter == pawn.DevelopmentalStage;
+            });
+            return PawnApparelGenerator.GenerateApparelOfDefFor(pawn, item.def);
         }
 
         public void AddInjury(Injury injury) {

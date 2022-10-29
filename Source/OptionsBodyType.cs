@@ -61,6 +61,9 @@ namespace EdB.PrepareCarefully {
             if (developmentalStage == DevelopmentalStage.Baby || developmentalStage == DevelopmentalStage.Newborn) {
                 return babyBodyTypes;
             }
+            if (developmentalStage == DevelopmentalStage.Child) {
+                return childBodyTypes;
+            }
             if (gender == Gender.Male) {
                 return maleBodyTypes;
             }
