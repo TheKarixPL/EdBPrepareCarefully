@@ -104,9 +104,14 @@ namespace EdB.PrepareCarefully {
         }
 
         public override void AddToPawn(CustomPawn customPawn, Pawn pawn) {
-            if (recipe != null && BodyPartRecord != null) {
-                this.hediff = HediffMaker.MakeHediff(recipe.addsHediff, pawn, BodyPartRecord);
-                pawn.health.AddHediff(hediff, BodyPartRecord, new DamageInfo?());
+            if (BodyPartRecord != null) {
+                if (recipe != null) {
+                    this.hediff = HediffMaker.MakeHediff(recipe.addsHediff, pawn, BodyPartRecord);
+                    pawn.health.AddHediff(hediff, BodyPartRecord, new DamageInfo?());
+                } else {
+                    Logger.Warning($"Could not add {hediff.Label} with a recipe, adding it directly");
+                    pawn.health.hediffSet.AddDirect(hediff);
+                }
             }
         }
 

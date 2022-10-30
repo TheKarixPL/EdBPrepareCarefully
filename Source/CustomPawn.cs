@@ -332,7 +332,6 @@ namespace EdB.PrepareCarefully {
                             continue;
                         }
                     }
-
                     Injury injury = new Injury();
                     injury.BodyPartRecord = hediff.Part;
                     injury.Option = option;
@@ -346,21 +345,11 @@ namespace EdB.PrepareCarefully {
                 }
                 else {
                     //Logger.Debug("Did not find injury option for {" + hediff.def.defName + "} for part {" + hediff.Part?.LabelCap + "}");
-                    RecipeDef implantRecipe = healthOptions.FindImplantRecipesThatAddHediff(hediff).RandomElementWithFallback(null);
-                    if (implantRecipe != null) {
-                        Implant implant = new Implant();
-                        implant.recipe = implantRecipe;
-                        implant.BodyPartRecord = hediff.Part;
-                        implant.Hediff = hediff;
-                        implants.Add(implant);
-                        //Logger.Debug("Found implant recipes for {" + hediff.def.defName + "} for part {" + hediff.Part?.LabelCap + "}");
-                    }
-                    else if (hediff.def.defName != "MissingBodyPart") {
-                        Logger.Warning("Could not add hediff {" + hediff.def.defName + "} to the pawn because no recipe adds it to the body part {" + (hediff.Part?.def?.defName ?? "WholeBody") + "}");
-                    }
-                    else {
-                        Logger.Warning("Could not add hediff {" + hediff.def.defName + "} to the pawn.  It is not currently supported");
-                    }
+                    Implant implant = new Implant();
+                    implant.BodyPartRecord = hediff.Part;
+                    implant.Hediff = hediff;
+                    implants.Add(implant);
+                    //Logger.Debug("Found implant recipes for {" + hediff.def.defName + "} for part {" + hediff.Part?.LabelCap + "}");
                 }
             }
             this.injuries.Clear();
