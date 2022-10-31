@@ -712,16 +712,16 @@ namespace EdB.PrepareCarefully {
             }
 
             // Draw the current color box.
-            GUI.color = Color.white;
-            Rect currentColorRect = new Rect(SwatchPosition.x, swatchRect.y + 4, 49, 49);
-            if (swatchRect.x != SwatchPosition.x) {
-                currentColorRect.y += SwatchSpacing.y;
-            }
-            GUI.color = ColorSwatchBorder;
-            GUI.DrawTexture(currentColorRect, BaseContent.WhiteTex);
-            GUI.color = customPawn.SkinColor;
-            GUI.DrawTexture(currentColorRect.ContractedBy(1), BaseContent.WhiteTex);
-            GUI.color = Color.white;
+            //GUI.color = Color.white;
+            //Rect currentColorRect = new Rect(SwatchPosition.x, swatchRect.y + 4, 49, 49);
+            //if (swatchRect.x != SwatchPosition.x) {
+            //    currentColorRect.y += SwatchSpacing.y;
+            //}
+            //GUI.color = ColorSwatchBorder;
+            //GUI.DrawTexture(currentColorRect, BaseContent.WhiteTex);
+            //GUI.color = customPawn.SkinColor;
+            //GUI.DrawTexture(currentColorRect.ContractedBy(1), BaseContent.WhiteTex);
+            //GUI.color = Color.white;
 
             // Figure out the lerp value so that we can draw the slider.
             float minValue = 0.00f;
@@ -738,7 +738,7 @@ namespace EdB.PrepareCarefully {
             }
 
             // Draw the slider.
-            float newValue = GUI.HorizontalSlider(new Rect(currentColorRect.x + 56, currentColorRect.y + 18, 136, 16), t, minValue, 1);
+            float newValue = 0.0f;/* GUI.HorizontalSlider(new Rect(currentColorRect.x + 56, currentColorRect.y + 18, 136, 16), t, minValue, 1); */
             if (newValue < minValue) {
                 newValue = minValue;
             }
@@ -748,7 +748,7 @@ namespace EdB.PrepareCarefully {
             GUI.color = Color.white;
 
             // If the user selected a new swatch or changed the lerp value, set a new color value.
-            if (t != newValue || clickedIndex != -1) {
+            if (/* t != newValue ||  */clickedIndex != -1) {
                 if (clickedIndex != -1) {
                     currentSwatchIndex = clickedIndex;
                 }
