@@ -88,6 +88,7 @@ namespace EdB.PrepareCarefully {
                 pawnKinds.Sort((a, b) => {
                     return a.LabelCap.ToString().CompareTo(b.LabelCap.ToString());
                 });
+                // Logger.Warning($"creating new FactionPawnKinds with faction: {faction} it has these pawn kinds: \n {string.Join("\n", pawnKinds.Select(pk => pk.LabelCap))}");
                 pawnKindsByFaction.Add(new FactionPawnKinds() {
                     Faction = faction,
                     PawnKinds = pawnKinds
@@ -95,7 +96,7 @@ namespace EdB.PrepareCarefully {
             }
 
             pawnKindsByFaction.Sort((a, b) => {
-                return a.Faction.LabelCap.ToString().CompareTo(b.Faction.LabelCap.ToString());
+                return a.Faction.ToString().CompareTo(b.Faction.ToString());
             });
             otherPawnKinds.Sort((a, b) => {
                 return a.LabelCap.ToString().CompareTo(b.LabelCap.ToString());
